@@ -12,6 +12,6 @@ public class RelatorioSaudeResponse {
     private int totalRegistros;
     private Double mediaFrequenciaCardiaca;
     private Double mediaOxigenacao;
-
+    private List<String> alertas;
     private List<RegistroSaude> historicoDetalhado;
 }

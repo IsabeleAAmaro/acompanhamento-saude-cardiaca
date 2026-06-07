@@ -26,7 +26,6 @@ public class RegistroSaudeService {
         Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
-        // 2. Prepara o registro
         RegistroSaude registro = new RegistroSaude();
         registro.setUsuario(usuario);
         registro.setDataRegistro(LocalDateTime.now());
@@ -36,19 +35,16 @@ public class RegistroSaudeService {
         registro.setPesoCorporal(request.getPesoCorporal());
         registro.setSintomas(request.getSintomas());
 
-        // 3. Salva no banco
         return registroRepository.save(registro);
     }
 
     public RelatorioSaudeResponse gerarRelatorio(Long usuarioId) {
-        // 1. Busca todos os registros do usuário, ordenados do mais recente pro mais antigo
         List<RegistroSaude> registros = registroRepository.findByUsuarioIdOrderByDataRegistroDesc(usuarioId);
 
         if (registros.isEmpty()) {
             throw new IllegalArgumentException("Nenhum registro encontrado para elaborar o relatório.");
         }
 
-        // 2. Calcula as médias usando Java Streams
         Double mediaBpm = registros.stream()
                 .filter(r -> r.getFrequenciaCardiaca() != null)
                 .mapToInt(RegistroSaude::getFrequenciaCardiaca)
@@ -61,12 +57,35 @@ public class RegistroSaudeService {
                 .average()
                 .orElse(0.0);
 
-        // 3. Monta o relatório final
+        java.util.List<String> alertas = new java.util.ArrayList<>();
+        RegistroSaude ultimoRegistro = registros.get(0); // Pega a medição mais recente
+
+        if (ultimoRegistro.getFrequenciaCardiaca() != null && ultimoRegistro.getFrequenciaCardiaca() > 100) {
+            alertas.add("Atenção: Sua última frequência cardíaca está elevada (> 100 bpm). Considere repousar.");
+        }
+
+        if (ultimoRegistro.getOxigenacaoSangue() != null && ultimoRegistro.getOxigenacaoSangue() < 95.0) {
+            alertas.add("Alerta: Nível de oxigenação no sangue abaixo do recomendado (< 95%). Procure orientação médica.");
+        }
+
+        if (ultimoRegistro.getPressaoArterial() != null && ultimoRegistro.getPressaoArterial().contains("/")) {
+            try {
+                String[] partesPressao = ultimoRegistro.getPressaoArterial().split("/");
+                int pressaoSistolica = Integer.parseInt(partesPressao[0]);
+
+                if (pressaoSistolica >= 140) {
+                    alertas.add("Atenção: Sua pressão sistólica está alta (>= 140). Monitore com frequência.");
+                }
+            } catch (Exception e) {
+            }
+        }
+
         RelatorioSaudeResponse relatorio = new RelatorioSaudeResponse();
         relatorio.setUsuarioId(usuarioId);
         relatorio.setTotalRegistros(registros.size());
         relatorio.setMediaFrequenciaCardiaca(Math.round(mediaBpm * 100.0) / 100.0);
         relatorio.setMediaOxigenacao(Math.round(mediaOxi * 100.0) / 100.0);
+        relatorio.setAlertas(alertas);
         relatorio.setHistoricoDetalhado(registros);
 
         return relatorio;
