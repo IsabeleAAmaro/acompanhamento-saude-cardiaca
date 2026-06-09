@@ -36,7 +36,7 @@ class UsuarioControllerIntegrationTest {
 
         String jsonRequest = """
                 {
-                  "nome": "João Pedro",
+                  "nome": "Carlos",
                   "sobrenome": "Cardoso",
                   "email": "%s",
                   "telefone": "21988880000",
