@@ -13,7 +13,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API - Acompanhamento de Saúde Cardíaca")
-                        .description("Documentação dos serviços de backend para o projeto de Programação Modular.")
+                        .description("Documentação dos serviços de backend para o projeto sobre acompanhamento da saúde cardíaca.")
                         .version("v1.0.0"));
     }
 }
