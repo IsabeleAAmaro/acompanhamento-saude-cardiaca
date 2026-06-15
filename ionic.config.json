@@ -1,0 +1,7 @@
+{
+  "name": "saude-cardiaca-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
