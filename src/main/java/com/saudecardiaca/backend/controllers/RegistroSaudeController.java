@@ -27,7 +27,11 @@ public class RegistroSaudeController {
 
     @GetMapping("/relatorios/{usuarioId}")
     public ResponseEntity<RelatorioSaudeResponse> obterRelatorio(@PathVariable Long usuarioId) {
-        RelatorioSaudeResponse relatorio = registroSaudeService.gerarRelatorio(usuarioId);
+        try {
+            RelatorioSaudeResponse relatorio = registroSaudeService.gerarRelatorio(usuarioId);
         return ResponseEntity.ok(relatorio);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
