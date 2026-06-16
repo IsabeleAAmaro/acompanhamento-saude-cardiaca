@@ -1,13 +1,21 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>integrantes</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Equipe</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">integrantes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Integrantes do Grupo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Isabele Amaro</strong></p>
+      <p><strong>Pedro Paulo Rodrigues da Silva</strong></p>
+      <p><strong>Viviane Tranquilino</strong></p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

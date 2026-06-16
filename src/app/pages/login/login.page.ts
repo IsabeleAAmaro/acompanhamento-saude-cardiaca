@@ -15,9 +15,9 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -39,8 +39,8 @@ import { AuthService } from '../../services/auth';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonText
-  ]
+    IonText,
+  ],
 })
 export class LoginPage {
   email = '';
@@ -49,13 +49,13 @@ export class LoginPage {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   fazerLogin() {
     const body = {
       email: this.email,
-      senha: this.senha
+      senha: this.senha,
     };
 
     this.authService.login(body).subscribe({
@@ -67,7 +67,7 @@ export class LoginPage {
       error: (err) => {
         console.error('Erro no login', err);
         this.mensagem = 'E-mail ou senha inválidos.';
-      }
+      },
     });
   }
 

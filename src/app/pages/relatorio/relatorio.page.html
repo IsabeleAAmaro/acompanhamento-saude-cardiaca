@@ -1,13 +1,54 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>relatorio</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Relatório Clínico</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">relatorio</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  
+  <div *ngIf="!relatorio" class="ion-text-center ion-margin-top">
+    <p>Carregando dados do servidor...</p>
+  </div>
+
+  <div *ngIf="relatorio">
+    <ion-card color="danger" *ngIf="relatorio.alertas && relatorio.alertas.length > 0">
+      <ion-card-header>
+        <ion-card-title>Alertas Automáticos</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li *ngFor="let alerta of relatorio.alertas">{{ alerta }}</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Seu Histórico de Médias</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h2>Frequência Cardíaca</h2>
+              <p>Média geral registrada</p>
+            </ion-label>
+            <ion-badge color="tertiary">{{ relatorio.mediaFrequenciaCardiaca | number:'1.0-1' }} bpm</ion-badge>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h2>Oxigenação (SpO2)</h2>
+              <p>Média geral registrada</p>
+            </ion-label>
+            <ion-badge color="success">{{ relatorio.mediaOxigenacao | number:'1.1-2' }} %</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 </ion-content>

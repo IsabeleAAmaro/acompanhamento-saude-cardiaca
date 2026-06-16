@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
 })
 export class UsuarioService {
   private apiUrl = environment.apiUrl;
-
   constructor(private http: HttpClient) {}
 
   registrar(body: any) {
